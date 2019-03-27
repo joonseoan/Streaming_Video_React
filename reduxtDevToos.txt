@@ -1,0 +1,29 @@
+1. visit redux-devtools-extension.
+2. add extension to chrom browser.
+3. In index.js (main root ) of the codes, add the followings.
+
+import { createStore, applyMiddleware, compose } from 'redux';
+
+// redux devtools extension
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+// we do not need thunk because we do not need to us async functions.
+const store = createStore(
+    reducers,
+    composeEnhancers(applyMiddleware())
+);
+
+4. If the redux icon is activated with green light,
+    click the icon in the browser.
+
+5. click left-side and middle icon at the buttom.
+    => the another window will be populated.
+
+6. click state button.
+    => We can find auth state with isSignedIn and id information.
+
+7. debug
+localhost:3000?debug_session=afadfadf(any string);
+=> then change redux state. => it won't change the dispatches inside of redux tools
+==> for instance, let's assume that the last dispatch is "Sign in"
+==>  refresh the brwoser. We can still find "Sign-in"
