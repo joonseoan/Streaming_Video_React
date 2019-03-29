@@ -1,7 +1,151 @@
+
 import React from 'react';
 
-const StreamCreate = () => {
-    return <div>StreamCreate</div>
+// Field : Be react component fro reduxForm Class Field. It is why it uses capital F
+//  "component" down below is a helper function that receives a callbck 
+
+// reduxtForm: function that is exactly same role as "connect()"" of react-redux
+import { Field, reduxForm } from 'redux-form';
+
+class StreamCreate extends React.Component {
+
+    // Eventually this helper function is a callback that will be invoked in "component" functions below.
+    // <Field component={} />
+
+    // field (any name): is an map parameter containing all input event functions.
+    //      that are working inside of redux-form lib.
+    
+    // 1)
+    // renderInput = (field) => {
+
+    /* 
+        -  "field": brings up 1) the required event functions such as onChange,
+                meta data setup functions, and dispatch in reduxForm as shown below.
+
+        - It is an object that contains all the functions 
+            which is invoked and run in redux-form and then dispatched to reach reducer
+
+        input: {name: "title", onBlur: ƒ, onChange: ƒ, onDragStart: ƒ, onDrop: ƒ, …}
+        meta: {active: false, asyncValidating: false, autofilled: false, dirty: false, dispatch: ƒ, …}
+        __proto__: Object
+    
+    */
+    // console.log(field)
+
+    // Based on a group of event functions of "field"
+    // "input" must implement field event function define in "field.input", 
+    //    not use the React component level event function, to get to the redux store.
+
+    // 2) destructuring
+    renderInput = ({ input, label }) => {
+
+        // 3) destructuring
+        return (
+            <div className="field">
+                <label>{ label }</label>
+                <input { ...input } />
+            </div>
+        );
+        
+        // 2) Copy all input field value including....
+        // return <input { ...field.input } />;
+
+        // 1)
+        // return <input onChange={ field.input.onChange } value = { field.input.value } />;
+    };
+
+    // 2) By implementing "this.props.handleSubmit" built in reduxForm
+    //  we should set it up differently from the componen level submit management.
+    //  "reduxFormEvent" (any name): that is from "this.props.hanleSubmit"'s event parameter.
+    //  to easily readable and understandable
+    //  we will use "reduxFormEvent" instead of "event"
+    onSubmit = reduxFormEvent => {
+
+        // reduxFormEvent: delivers input "name" and "value"
+        //  instead of e.target.value and e.target.name
+        /* 
+            {
+                description: "value"
+                title: "name"
+            } 
+        */
+        console.log(reduxFormEvent)
+
+    };
+
+    // 1)
+    // component level onSubmit helper event function.
+    // onSubmit = e => {
+    //     e.preventDefault();
+    // }
+
+    render() {
+        console.log(this.props); // find fx : handleSubmit()
+        return (
+            // onSubmit: props field name in React
+            // "this.props.handleSubmit": from reduxForm
+            // "this.onSubmit": helper function up and above.
+            // In result, reduxForm's "this.props.handleSubmit" takes "this.onSubmit" in as a callback parameter
+            //  that is invoked in reduxForm!!!!!
+            <form onSubmit={ this.props.handleSubmit(this.onSubmit) } className="ui form">
+                {/* Field: all input types composed in Class */}
+                {/* 
+                    **** reduxForm will automatically manage the event functions
+                        by utilizing the event function defined in reduxForm
+
+                    **** component: just helper function, in Field Class,
+                            that just calls and receives and renders the return 
+                                    inside of Field class
+
+                        It mainly works with a callbck like the below.
+                */}
+
+                {/* 
+                
+                    [ IMPORTANT!!!! ]
+                    whenever we put attributes of Field calss like name, label,
+                    those attributes can come in a "component" function in Field class.
+
+                    In other words, the component fuction can implement those attributes
+                    as we did in class object.
+
+                    class Field {
+                        construnctor() {
+                            this.aa =aa;
+                            this.bb = bb;
+                        }
+
+                        component(callback) {
+                            const dd = this.aa
+                            const ff = this.bb
+
+                            callback(this.aa, this.bb)
+                        }
+                    }
+
+                    Therefore, "label" attribute/props can be set as a paramter in 
+                    "this.renderInput"
+                
+                */}
+
+                <Field name = "title" 
+                       component = { this.renderInput } 
+                       label = "Enter Title" 
+                />
+                <Field name = "description" 
+                       component = { this.renderInput } 
+                       label = "Enter Description"
+                />
+                <button className="ui button primary" type="submit">Submit</button>
+            </form>
+        );
+    }
 }
 
-export default StreamCreate;
+export default reduxForm({ 
+    // form: built-in key name of reduxForm
+    // It stores a form with a name "stramCreate 
+    //  and then" sends funtional value to React component
+    //  over/through props.
+    form: 'streamCreate'
+})(StreamCreate);
