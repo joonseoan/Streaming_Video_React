@@ -1,11 +1,12 @@
 
 import React from 'react';
-
+import { connect } from 'react-redux';
 // Field : Be react component fro reduxForm class Field. It is why it uses capital "F"
 //  "component" down below is a helper function that receives a callbck 
 
 // reduxtForm: function that is exactly same role as "connect()"" of react-redux
 import { Field, reduxForm } from 'redux-form';
+import { createStream } from '../../actions';
 
 class StreamCreate extends React.Component {
 
@@ -102,7 +103,8 @@ class StreamCreate extends React.Component {
                 title: "name"
             } 
         */
-        console.log(reduxFormEvent)
+        console.log(reduxFormEvent);
+        this.props.createStream(reduxFormEvent);
 
     };
 
@@ -207,13 +209,22 @@ const validate = (formValues) => {
 
 }
 
-export default reduxForm({ 
-    // form: built-in key name of reduxForm
-    // It stores a form with a name "stramCreate 
-    //  and then" sends funtional value to React component
-    //  over/through props.
+// 2) with redux and reduxForm
+const formWrapped = reduxForm({
     form: 'streamCreate',
-
-    // wire up validate function to reduxForm
     validate
 })(StreamCreate);
+
+export default connect(null, { createStream })(formWrapped);
+
+// 1) reduxForm only
+// export default reduxForm({ 
+//     // form: built-in key name of reduxForm
+//     // It stores a form with a name "stramCreate 
+//     //  and then" sends funtional value to React component
+//     //  over/through props.
+//     form: 'streamCreate',
+
+//     // wire up validate function to reduxForm
+//     validate
+// })(StreamCreate);

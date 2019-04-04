@@ -7,9 +7,11 @@ import {combineReducers } from 'redux';
 //  we would need a unique name of each reduer.
 import { reducer as formReducer } from 'redux-form';
 import authReducer from './authReducer';
+import streamReducer from './streamReducer';
 
 export default combineReducers({
     auth: authReducer,
+    streams: streamReducer,
     // combine redux-form reducer.
     form: formReducer
 });
