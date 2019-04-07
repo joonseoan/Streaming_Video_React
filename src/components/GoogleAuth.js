@@ -64,13 +64,15 @@ class GoogleAuth extends React.Component {
 
     auth;
 
-
     // 1) component level state
+
     // state = {
-    //     // false: not signed in
-    //     // true: signed in
-    //     // null: we do not know.
-    //     isSignedIn: null 
+
+        // false: not signed in
+        // true: signed in
+        // null: we do not know.
+        //     isSignedIn: null 
+    
     // };
 
     // invoke google oauth functions from google.
@@ -81,14 +83,14 @@ class GoogleAuth extends React.Component {
             // based on "Promise"
             window.gapi.client.init({ 
                 clientId: GOOGLE_OAUTH_CLIENT_ID,
-                // scope ia differnt parts that we want to access to out of "user accounts"
+                // "scope" is differnt parts that we want to access to out of "user accounts"
                 // for instance, user "profile" and "email" 
                 scope: 'email'
             })
             .then(() => {
 
                 // visit the doc site : https://developers.google.com/api-client-library/javascript/reference/referencedocs
-                // get "gapi.auth2.getAuthInstance()" ===> "auth" object!!!
+                // find "gapi.auth2.getAuthInstance()" ===> "auth" object!!!
                 
                 // "this: " is a react class attributes.
                 /* 
@@ -120,7 +122,7 @@ class GoogleAuth extends React.Component {
                 // this.auth.isSignedIn.get() : just to get "current" signin status with boolean value
                 //  when it is rendering at the second time.
                 // Again, this is working only at the the second rendering
-                //  because it is inside (componentDidUpdate)
+                //  because it is inside (componentDidMount)
                 // this.setState({ isSignedIn: this.auth.isSignedIn.get() });
 
                 // listen() : listen to change of signIn and signOut
@@ -142,7 +144,8 @@ class GoogleAuth extends React.Component {
         });
     }
 
-    // by using redux store
+    //
+    // 2) by using redux store
     // to change ui only in terms of "this.auth.isSignedIn.get()"
     onAuthChange = (isSignedIn) => {
 
@@ -158,8 +161,8 @@ class GoogleAuth extends React.Component {
         }
     }
 
-    // callback of listen(): It updates the state whenever auth status changes
     // 1) by using internal component state
+    // callback of listen(): It updates the state whenever auth status changes
     // onAuthChange = () => {
     //     this.setState({ isSignedIn: this.auth.isSignedIn.get() });
     // }
@@ -173,6 +176,18 @@ class GoogleAuth extends React.Component {
     }
 
     renderAuthButton() {
+
+        /* 
+            // wheneever we use callback in listen(), it will retrieve and deliver "isSignedIn" property to props
+            By using __proto__ of gapi.auth2.getAuthInstance().isSignedIn
+            
+            1) __proto__ : prototype property of legacy objects in Javascript
+            2) listen(callback) in prototype
+
+            xF {... 
+                {hg: Array(0)}__proto__: Ei: ƒ (a)get: ƒ ()listen: ƒ (a)set: ƒ (a)constructor: ƒ (a)__proto__: Object}
+        
+        */
         // 2) using redux store
         if(this.props.isSignedIn === null) {
         // 1) using component level state
@@ -204,18 +219,6 @@ class GoogleAuth extends React.Component {
     }
 
     render() {
-
-        /* 
-            By using __proto__ of gapi.auth2.getAuthInstance().isSignedIn
-            
-            1) __proto__ : prototype property of legacy objects in Javascript
-            2) listen(callback) in prototype
-
-            // wheneever we use callback in listen(), it will retrieve "isSignedIn"
-            xF {... 
-                {hg: Array(0)}__proto__: Ei: ƒ (a)get: ƒ ()listen: ƒ (a)set: ƒ (a)constructor: ƒ (a)__proto__: Object}
-        
-        */
         return(<div>{ this.renderAuthButton() }</div>);
     }
 }
@@ -225,5 +228,3 @@ const mapStateToProps =  ({ auth }) => {
 }
 
 export default connect(mapStateToProps, { signIn, signOut })(GoogleAuth);
-
-// export default GoogleAuth;

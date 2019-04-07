@@ -21,18 +21,21 @@ export const signOut = () => {
     };
 }
 
-// Do not forget the getSate from redux
+// Do not forget "getSate()"!!!! from the redux-store.
 export const createStream = formValues => async (dispatch, getState) => {
+    // ****************************************
     const { userId } = getState().auth;
     // adding userId
     const response = await streams.post('/streams',  
+        
+        // We can directly use copy in arguments
+        // the way to merge the new properties
         { ...formValues, 
             userId: userId || ''
         }
     );
 
     dispatch({ type: CREATE_STREAM, payload: response.data });
-    
 }
 
 export const fetchStreams = () => async dispatch => {

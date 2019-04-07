@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-// Field : Be react component fro reduxForm class Field. It is why it uses capital "F"
+// Field : Be react component from reduxForm class Field. It is why it uses capital "F"
 //  "component" down below is a helper function that receives a callbck 
 
 // reduxtForm: function that is exactly same role as "connect()"" of react-redux
@@ -36,19 +36,18 @@ class StreamCreate extends React.Component {
     // renderInput = (field) => {
 
     /* 
-        -  "field": brings up 1) the required event functions such as onChange,
+        -  "field": brings up 1) all the required event functions such as onChange,
                 meta data setup functions, and dispatch in reduxForm as shown below.
 
         - It is an object that contains all the functions 
-            which is invoked and run in redux-form and then dispatched to reach reducer
+            which are invoked and run in redux-form and then dispatched to reach reducer
 
-        input: {name: "title", onBlur: ƒ, onChange: ƒ, onDragStart: ƒ, onDrop: ƒ, …}
-        meta: {active: false, asyncValidating: false, autofilled: false, dirty: false, dispatch: ƒ, …}
-        __proto__: Object
-    
+            input: {name: "title", onBlur: ƒ, onChange: ƒ, onDragStart: ƒ, onDrop: ƒ, …}
+            meta: {active: false, asyncValidating: false, autofilled: false, dirty: false, dispatch: ƒ, …}
+            __proto__: Object
+            console.log(field)
     */
-    // console.log(field)
-
+    
     // Based on a group of event functions of "field"
     // "input" must implement "field"'s event function defined in "field.input", 
     //    not use the React component level event function, to get to the redux store.
@@ -59,9 +58,8 @@ class StreamCreate extends React.Component {
         // control input color in terms of error.
         const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 
-
-        // meta : to pass down "error message" defined in the validation function
-        //   and functions built-in to manage the error in front end.
+        // meta : functions built-in to manage the error in front end 
+        //  by passing down "error message" defined in the validation function
         // console.log('meta: ', meta)
 
         // 3) destructuring
@@ -73,11 +71,14 @@ class StreamCreate extends React.Component {
                     autoComplete: autocoplete off ************
                 */}
                 <input { ...input } autoComplete="off" />
-                {/* 1) 
-                    <div>{ meta.touched ? meta.error : '' }</div>
-                */}
+
                 {/*  2) by using functions */}
                 { this.renderErrors(meta) }
+
+                {/* 
+                    1) 
+                    <div>{ meta.touched ? meta.error : '' }</div>
+                */}
             </div>
         );
         
@@ -88,7 +89,7 @@ class StreamCreate extends React.Component {
         // return <input onChange={ field.input.onChange } value = { field.input.value } />;
     };
 
-    // 2) By implementing "this.props.handleSubmit" built in reduxForm
+    // 2) For implementing "this.props.handleSubmit" built in reduxForm
     //  we should set it up differently from the componen level submit management.
     //  "reduxFormEvent" (any name): that is from "this.props.hanleSubmit"'s event parameter so called "e" or "event".
     //  to easily readable and understandable
@@ -105,7 +106,6 @@ class StreamCreate extends React.Component {
         */
         console.log(reduxFormEvent);
         this.props.createStream(reduxFormEvent);
-
     };
 
     // 1)
@@ -124,7 +124,7 @@ class StreamCreate extends React.Component {
             //  that is invoked in reduxForm!!!!!
 
             // !!!!!1 [Semantic UI] : to show error message, we must put "error" in className.
-            //  because the default value is "hide!!!"
+            //  because the default value is "hide!!!" hiding error messages.
             <form onSubmit={ this.props.handleSubmit(this.onSubmit) } className="ui form error">
                 {/* Field: all input types composed in Class */}
                 {/* 
@@ -167,12 +167,13 @@ class StreamCreate extends React.Component {
                 */}
 
                 <Field name = "title" 
-                       component = { this.renderInput } 
                        label = "Enter Title" 
+                       component = { this.renderInput } 
+                      
                 />
                 <Field name = "description" 
-                       component = { this.renderInput } 
                        label = "Enter Description"
+                       component = { this.renderInput } 
                 />
                 <button className="ui button primary" type="submit">Submit</button>
             </form>
@@ -180,12 +181,12 @@ class StreamCreate extends React.Component {
     }
 }
 
-const validate = (formValues) => {
+const validate = formValues => {
     const errors = {};
     // check out "formValues.title" field
     if(!formValues.title) {
         // then, add error message to "title" created in errors object
-        //  not brought up from "formValues.title"
+
         // [Important] field name must be identical with the name of "<Field>"
         // For instance, title === title of Field below
         /* 
@@ -204,9 +205,7 @@ const validate = (formValues) => {
     if(!formValues.description) {
         errors.description = 'You must enter a description.'
     }
-
     return errors;
-
 }
 
 // 2) with redux and reduxForm

@@ -8,10 +8,12 @@ import {
  } from '../actions/types';
 
  export default (state = {}, action) => {
+
+    console.log('state change: ', state)
      switch(action.type) {
          case FETCH_STREAMS:
             // changing the array into "id" based object
-            // The second "..." a head of _.mapKeys is to copy the entire object elements
+            // The second "..." ahead of _.mapKeys is to copy the entire object elements*******************8
             //  to the "...state"************
             return { ...state, ..._.mapKeys(action.payload, 'id') };
          case FETCH_STREAM:

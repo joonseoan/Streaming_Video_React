@@ -1,5 +1,6 @@
 import { SIGN_IN, SIGN_OUT } from '../actions/types';
 
+// In order to return "undefined" of the state.
 const INITIAL_STATE = {
     isSignedIn: null,
     userId: null
