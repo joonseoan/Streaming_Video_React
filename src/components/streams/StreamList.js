@@ -19,10 +19,25 @@ class StreamList extends React.Component {
         // [userId]
         // the way to assign authority to a specific user
         //  who has currently logged in.
+
+        console.log(stream)
         if(stream.userId === this.props.currentUserId) {
             return (<div className="right floated content">
-                <button className="ui button primary">EDIT</button>
-                <button className="ui button negative">DELETE</button>
+                {/* <button className="ui button primary">EDIT</button> */}
+                
+                {/* using wild card */}
+                <Link 
+                    to={`/streams/edit/${ stream.id }`}
+                    className="ui button primary"    
+                >
+                    EDIT
+                </Link>
+                <Link
+                    to={`/streams/delete/${ stream.id }`} 
+                    className="ui button negative"
+                >
+                    DELETE
+                </Link>
             </div>);
         }
     }

@@ -29,6 +29,15 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- 
+      1)To be directly under the body
+      it must be sebling with "root" above.
+
+      2) It should not be ahead of "root"
+      because it will be covered with "root"
+      at the point that both have the same z-index number "0"
+    -->
+    <div id="modal"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

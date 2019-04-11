@@ -7,9 +7,10 @@ import {
     DELETE_STREAM
  } from '../actions/types';
 
+ // just remember every time an action arrives here
+ //     state value is a default value.!!!
+ // Therefore state = {} and then it is updated in terms of 'type'
  export default (state = {}, action) => {
-
-    console.log('state change: ', state)
      switch(action.type) {
          case FETCH_STREAMS:
             // changing the array into "id" based object

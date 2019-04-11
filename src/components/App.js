@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+// since we use history from the file
+//  BrowserRouter can't listen to that history from another react-router-dom component
+//import { BrowserRouter, Route } from 'react-router-dom';
+
+// Router is more comprehensive to listen to another history
+import { Router, Route } from 'react-router-dom';
 
 import StreamCreate from './streams/StreamCreate';
 import StreamDelete from './streams/StreamDelete';
@@ -7,6 +12,7 @@ import StreamEdit from './streams/StreamEdit';
 import StreamList from './streams/StreamList';
 import StreamShow from './streams/StreamShow';
 import Header from './Header';
+import history from '../history';
 
 // "Link: " In order to implement the singe page app without http req!
 // const PageOne = () => {
@@ -85,8 +91,27 @@ const App = () => {
             In order to make use of the react-router
             Header should be inside BrowserRouter with no specification of "url path"
         */}
+            {/* 
+                since we import history....(best)
+                The main reason to import another BrowserRouter history, 
+                not to use the built-in object from 'react-router-dom' is because
+                we need to use this history method in the components and also in action creators
+
+                At action creators, we use async promise function like axios.
+                Thus we should use promise call back (which might contain "redirect" to another component)
+                However, redirect is a component of history (react-router-doem)
+                We can't import react-router-dom in action creator. Therefore,
+                we need to make a file component only for history to be used at any level of React and Redux.
+
+                Otherwise, 1) we can directly call axios at the component level (worst)
+                2) until the correct data is retuned to the redux store, we should wait (better)
+                    ==> my restaurant app or customer survey
+            */}
+            <Router history={ history } >
+            {/* 
             
-            <BrowserRouter>
+                <BrowserRouter history={ history }>
+            */}
                 <Header />
                 {/* must have <div /> */}
                 <div>
@@ -102,11 +127,11 @@ const App = () => {
                         <Route path="/streams" component={ TestStreamPage } />
                     */}
                     <Route path="/streams/new" component={ StreamCreate } />
-                    <Route path="/streams/edit" component={ StreamEdit } />
-                    <Route path="/streams/delete" component={ StreamDelete } />
+                    <Route path="/streams/edit/:id" component={ StreamEdit } />
+                    <Route path="/streams/delete/:id" component={ StreamDelete } />
                     <Route path="/streams/show" component={ StreamShow } />
                 </div>
-            </BrowserRouter>
+            </Router>
         </div>
     );
 }
