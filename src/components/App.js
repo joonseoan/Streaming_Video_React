@@ -4,7 +4,7 @@ import React from 'react';
 //import { BrowserRouter, Route } from 'react-router-dom';
 
 // Router is more comprehensive to listen to another history
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 
 import StreamCreate from './streams/StreamCreate';
 import StreamDelete from './streams/StreamDelete';
@@ -119,17 +119,34 @@ const App = () => {
                     <Route path="/" exact component={ PageOne } />
                     <Route path="/pageTwo" component = { PageTwo } />
                 */}
-                    <Route path="/" exact component={ StreamList } />
-                    {/* 
-                        Basically, it will show up in every single /streams/* page
-                        if the one below exists.
 
-                        <Route path="/streams" component={ TestStreamPage } />
-                    */}
-                    <Route path="/streams/new" component={ StreamCreate } />
-                    <Route path="/streams/edit/:id" component={ StreamEdit } />
-                    <Route path="/streams/delete/:id" component={ StreamDelete } />
-                    <Route path="/streams/show" component={ StreamShow } />
+                {/* 
+                    <Switch />
+                    The reason to use "Switch is because of widl card"
+                    The wild card is able to get any variables like "1", "object","route" and etc.
+                    Instead route is only taking letters + (number optionally) which is recognizable.
+
+                    Therefore, "/streams/:id", a wild card is able to take "/streams/new" 
+                    , a route. They become the same url, at this point even though
+                    "exact is available."
+
+                    "exact" is able to recognize the difference of "routes"
+                        not to differentiate "wild card."
+                
+                */}
+                    <Switch>
+                        <Route path="/" exact component={ StreamList } />
+                        {/* 
+                            Basically, it will show up in every single /streams/* page
+                            if the one below exists.
+
+                            <Route path="/streams" component={ TestStreamPage } />
+                        */}
+                        <Route path="/streams/new" exact component={ StreamCreate } />
+                        <Route path="/streams/edit/:id" exact component={ StreamEdit } />
+                        <Route path="/streams/delete/:id" exact component={ StreamDelete } />
+                        <Route path="/streams/:id" exact component={ StreamShow } />
+                    </Switch>
                 </div>
             </Router>
         </div>

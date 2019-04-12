@@ -9,6 +9,7 @@ import { deleteStream, fetchStream } from '../../actions';
 
 class StreamDelete extends React.Component {
     
+    
     componentDidMount = () => {
         // console.log(this.props.match.params.id);
         this.props.fetchStream(this.props.match.params.id);
